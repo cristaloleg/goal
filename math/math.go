@@ -1,6 +1,6 @@
 package mathm
 
-// Abs X
+// Abs returns absolute value
 func Abs(x int) int {
 	if x > 0 {
 		return x
@@ -8,7 +8,7 @@ func Abs(x int) int {
 	return -x
 }
 
-// Gcd X
+// Gcd returns greatest common divisor
 func Gcd(a, b int) int {
 	for a != 0 {
 		a, b = b%a, a
@@ -16,7 +16,7 @@ func Gcd(a, b int) int {
 	return b
 }
 
-// Lcm X
+// Lcm returns least common multiple
 func Lcm(a, b int) int {
 	return a * Gcd(a, b) / b
 }
