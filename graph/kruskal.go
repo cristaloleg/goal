@@ -28,6 +28,9 @@ func Kruskal(edges []Edge) []Edge {
 			uf.Union(p.src, p.dst)
 			res = append(res, p)
 		}
+		if uf.Count() == 1 {
+			break
+		}
 	}
 	return res
 }
