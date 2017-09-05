@@ -6,9 +6,7 @@ PKG = $(shell go list ./... | grep -v /vendor/)
 all: install build test
 
 install:
-	go get github.com/cristaloleg/golds
 	go get github.com/golang/lint/golint
-	go get github.com/mattn/goveralls
 	go get golang.org/x/tools/cmd/cover
 
 build:
@@ -18,7 +16,16 @@ bench:
 	go test -bench=. -benchmem ${PKG}
 
 test:
-	go test -v -cover ${PKG}
+	go test -v ${PKG}
+
+cover:
+	echo "" > coverage.txt
+	for d in ${PKG}; \
+		do echo "" > profile.out; \
+		go test -coverprofile=profile.out -covermode=set $$d; \
+		cat profile.out >> coverage.txt; \
+		rm profile.out; \
+	done
 
 fmt:
 	gofmt -l -w *.go
@@ -31,7 +38,7 @@ race:
 	go test -race ${PKG}
 
 cpuprof:
-	go test -cpuprofile cpu-${TIMESTAMP}.prof
+	go test -cpuprofile cpu-${TIMESTAMP}.prof ${PKG}
 
 memprof:
-	go test -memprofile mem-${TIMESTAMP}.prof
+	go test -memprofile mem-${TIMESTAMP}.prof ${PKG}
