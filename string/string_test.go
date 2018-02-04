@@ -66,6 +66,39 @@ func TestEditDistEx(t *testing.T) {
 	}
 }
 
+func TestSearchRabinKarp(t *testing.T) {
+	var tests = []struct {
+		a    string
+		b    string
+		want int
+	}{
+		{"foo", "baz", -1},
+		{"foo", "foo", 0},
+		{"oofofoofooo", "f", 2},
+		{"oofofoofooo", "foo", 4},
+		{"barfoobarfoo", "foo", 3},
+		{"foo", "o", 1},
+		{"abcABCabc", "A", 3},
+		{"x", "a", -1},
+		{"x", "x", 0},
+		{"abc", "a", 0},
+		{"abc", "b", 1},
+		{"abc", "c", 2},
+		{"abc", "x", -1},
+		{"barfoobarfooyyyzzzyyyzzzyyyzzzyyyxxxzzzyyy", "x", 33},
+		{"foofyfoobarfoobar", "y", 4},
+		{"oooooooooooooooooooooo", "r", -1},
+		{"oxoxoxoxoxoxoxoxoxoxoxoy", "oy", 22},
+		{"oxoxoxoxoxoxoxoxoxoxoxox", "oy", -1},
+	}
+	for _, tt := range tests {
+		t.Run("", func(t *testing.T) {
+			if got := SearchRabinKarp([]byte(tt.a), []byte(tt.b)); got != tt.want {
+				t.Errorf("got %v want %v :: `%v` & `%v`", got, tt.want, tt.a, tt.b)
+			}
+		})
+	}
+}
 func BenchmarkEditDist(t *testing.B) {
 	a, b := "1234567890123456789", "123456789987654321"
 	t.ReportAllocs()
