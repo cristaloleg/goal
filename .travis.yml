@@ -1,24 +1,21 @@
 language: go
 
 go:
-  - 1.9.x
-  - 1.8.x
-  - tip
+  - 1.x
 
 matrix:
-  allow_failures:
-    - go: tip
   fast_finish: true
 
 before_install:
-  - make install
+#   - make install
 
 script:
-  - make lint
+  - diff -u <(echo -n) <(gofmt -d .)
+#   - make lint
   - make test
 
 after_success:
-  - travis_retry goveralls -coverprofile=cover.out -service=travis-ci
+  - make cover
   - bash <(curl -s https://codecov.io/bash)
 
 notifications:
